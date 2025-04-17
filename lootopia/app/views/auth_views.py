@@ -14,6 +14,7 @@ class RegisterAPIView(APIView):
         mail = request.data.get("mail")
         password = request.data.get("password")
         id_role = request.data.get("id_role")
+        
 
         if User.objects.filter(pseudo=pseudo).exists():
             return Response({"error": "Pseudo déjà utilisé"}, status=status.HTTP_400_BAD_REQUEST)
@@ -70,3 +71,4 @@ class VerifyTokenAPIView(APIView):
         """
         # Si le token est valide, la requête passera ici
         return Response({"message": "Token valide"}, status=status.HTTP_200_OK)
+RegisterAPIView

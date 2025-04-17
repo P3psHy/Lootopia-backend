@@ -1,5 +1,6 @@
 from django.contrib.auth.models import AbstractBaseUser, BaseUserManager, PermissionsMixin
 from django.db import models
+from django.utils import timezone
 
 class Role(models.Model):
     nom_role = models.CharField(max_length=50)
@@ -27,13 +28,17 @@ class User(AbstractBaseUser, PermissionsMixin):
     mail = models.EmailField(max_length=50, unique=True)
     role = models.ForeignKey("Role", on_delete=models.CASCADE)
 
-    is_active = models.BooleanField(default=True)  # Champ obligatoire pour Django
-    is_staff = models.BooleanField(default=False)  # Pour gérer les permissions
+    is_active = models.BooleanField(default=True)
+    is_staff = models.BooleanField(default=False)
 
-    USERNAME_FIELD = "pseudo"  # Utilisé pour l'authentification
-    REQUIRED_FIELDS = ["mail"]  # Champs obligatoires pour createsuperuser
+    creerChasse = models.BooleanField(default=False)
+    date_activation = models.DateTimeField(default=timezone.now)
+    date_desactivation = models.DateTimeField(null=True, blank=True)
 
-    objects = UserManager()  # Associe le UserManager
+    USERNAME_FIELD = "pseudo"
+    REQUIRED_FIELDS = ["mail"]
+
+    objects = UserManager()
 
     def __str__(self):
         return self.pseudo
