@@ -70,3 +70,4 @@ class VerifyTokenAPIView(APIView):
         """
         # Si le token est valide, la requête passera ici
         return Response({"message": "Token valide"}, status=status.HTTP_200_OK)
+RegisterAPIView
