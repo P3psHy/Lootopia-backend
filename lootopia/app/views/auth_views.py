@@ -14,6 +14,7 @@ class RegisterAPIView(APIView):
         mail = request.data.get("mail")
         password = request.data.get("password")
         id_role = request.data.get("id_role")
+        
 
         if User.objects.filter(pseudo=pseudo).exists():
             return Response({"error": "Pseudo déjà utilisé"}, status=status.HTTP_400_BAD_REQUEST)
