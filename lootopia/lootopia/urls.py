@@ -17,7 +17,7 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path
 from app.views.auth_views import RegisterAPIView, LoginView, VerifyTokenAPIView
-
+from app.views.chasse_view import ListPetitionAPIView, CreateChasseApiView, PetitionAPIView, EditChasseAPIView, DeleteChasseAPIView
 urlpatterns = [
     path('admin/', admin.site.urls),
 
@@ -26,4 +26,10 @@ urlpatterns = [
     path('api/user/login', LoginView.as_view(), name='login'),
     path('api/user/verify', VerifyTokenAPIView.as_view(), name='verify-token'),
 
+    # Chasse
+    path('chasses/', ListPetitionAPIView.as_view(), name='chasse-list'),
+    path('chasses/create/', CreateChasseApiView.as_view(), name='chasse-create'),
+    path('chasses/<int:petition_id>/', PetitionAPIView.as_view(), name='chasse-detail'),
+    path('chasses/<int:chasse_id>/edit/', EditChasseAPIView.as_view(), name='chasse-edit'),
+    path('chasses/<int:chasse_id>/delete/', DeleteChasseAPIView.as_view(), name='chasse-delete'),
 ]
