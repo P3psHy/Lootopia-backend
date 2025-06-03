@@ -44,3 +44,16 @@ class User(AbstractBaseUser, PermissionsMixin):
         return self.pseudo
 
 # Create your models here.
+
+class Chasse(models.Model):
+    titre = models.CharField(max_length=255,null=False)
+    couleur = models.CharField(max_length=16,null=False)
+    prix = models.FloatField(null=False)
+    date_fin = models.DateTimeField(null=False)
+    nombre_participant = models.IntegerField(null=False)
+    lieu = models.CharField(max_length=255)
+    monde = models.CharField(max_length=255)
+    est_prive = models.BooleanField(null=False)
+    messagerie_est_actif = models.BooleanField(null=False)
+
+    participants = models.ManyToManyField("User", related_name="chasses_participants")
