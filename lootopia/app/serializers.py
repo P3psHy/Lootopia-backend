@@ -7,12 +7,32 @@ class RoleSerializer(serializers.ModelSerializer):
         fields = '__all__'  # Inclut tous les champs du modèle
 
 class UserSerializer(serializers.ModelSerializer):
-    role = RoleSerializer(read_only=True)  # Inclut les détails du rôle
+    role = RoleSerializer(read_only=True)
+    role_id = serializers.PrimaryKeyRelatedField(
+        queryset=Role.objects.all(), source='role', write_only=True
+    )
 
     class Meta:
         model = User
-        fields = ['id', 'pseudo', 'mail', 'password', 'role']
-        extra_kwargs = {'password': {'write_only': True}}  # Cache le mot de passe
+        fields = ['id', 'pseudo', 'mail', 'password', 'role', 'role_id']
+        extra_kwargs = {'password': {'write_only': True}}
+
+    def create(self, validated_data):
+        password = validated_data.pop('password', None)
+        user = User(**validated_data)
+        if password:
+            user.set_password(password)
+        user.save()
+        return user
+
+
+# class UserSerializer(serializers.ModelSerializer):
+#     role = RoleSerializer(read_only=True)  # Inclut les détails du rôle
+
+#     class Meta:
+#         model = User
+#         fields = ['id', 'pseudo', 'mail', 'password', 'role']
+#         extra_kwargs = {'password': {'write_only': True}}  # Cache le mot de passe
 
 class ChasseSerializer(serializers.ModelSerializer):
     participants = serializers.PrimaryKeyRelatedField(
