@@ -1,6 +1,7 @@
 from django.contrib.auth.models import AbstractBaseUser, BaseUserManager, PermissionsMixin
 from django.db import models
 from django.utils import timezone
+from django.conf import settings
 
 class Role(models.Model):
     nom_role = models.CharField(max_length=50)
@@ -56,4 +57,13 @@ class Chasse(models.Model):
     est_prive = models.BooleanField(null=False)
     messagerie_est_actif = models.BooleanField(null=False)
 
-    participants = models.ManyToManyField("User", related_name="chasses_participants")
+    createur = models.ForeignKey(
+        settings.AUTH_USER_MODEL,  # référence à ton User personnalisé
+        on_delete=models.CASCADE,
+        related_name="chasses_crees"
+    )
+
+    participants = models.ManyToManyField(
+        settings.AUTH_USER_MODEL,
+        related_name="chasses_participants"
+    )
