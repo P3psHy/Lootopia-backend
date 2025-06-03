@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from .models import Role, User
+from .models import Role, User, Chasse
 
 class RoleSerializer(serializers.ModelSerializer):
     class Meta:
@@ -13,3 +13,13 @@ class UserSerializer(serializers.ModelSerializer):
         model = User
         fields = ['id', 'pseudo', 'mail', 'password', 'role']
         extra_kwargs = {'password': {'write_only': True}}  # Cache le mot de passe
+
+class ChasseSerializer(serializers.ModelSerializer):
+    participants = serializers.PrimaryKeyRelatedField(
+        many=True,
+        queryset=User.objects.all()
+    )
+
+    class Meta:
+        model = Chasse
+        fields = '__all__'
