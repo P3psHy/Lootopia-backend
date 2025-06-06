@@ -18,18 +18,19 @@ import os
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
+env = environ.Env()
+environ.Env.read_env()
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/5.1/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-6ge*c-qdu7^!gxg@apl*928j(*b5@%5&6e9_1sq+(cj%_^4s!f'
+DEBUG = env.bool("DEBUG", default=False)
+ALLOWED_HOSTS = env.list("ALLOWED_HOSTS", default=["localhost"])
+# ALLOWED_HOSTS = ['localhost', '.onrender.com', '127.0.0.1']
 
-# SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
-
-ALLOWED_HOSTS = ["localhost","127.0.0.1","*"]
-
+APPEND_SLASH = True
+SECRET_KEY = env("SECRET_KEY")
 
 # Application definition
 
@@ -87,8 +88,7 @@ WSGI_APPLICATION = 'core.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/3.2/ref/settings/#databases
 
-env = environ.Env()
-environ.Env.read_env()
+
 
 DATABASES = {
     'default': {
