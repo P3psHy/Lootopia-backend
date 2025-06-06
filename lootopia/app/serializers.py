@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from .models import Role, User, Chasse
+from .models import Role, User, Chasse, Theme
 
 class RoleSerializer(serializers.ModelSerializer):
     class Meta:
@@ -42,4 +42,13 @@ class ChasseSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Chasse
+        fields = '__all__'
+
+class ThemeSerializer(serializers.ModelSerializer):
+    themes = serializers.PrimaryKeyRelatedField(
+        many=True,
+        queryset=Theme.objects.all()
+    )
+    class Meta:
+        model = Theme
         fields = '__all__'
