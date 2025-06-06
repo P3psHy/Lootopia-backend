@@ -67,3 +67,19 @@ class Chasse(models.Model):
         settings.AUTH_USER_MODEL,
         related_name="chasses_participants"
     )
+
+    caches = models.ManyToManyField(
+        settings.AUTH_USER_MODEL,
+        related_name="chasses_caches"
+    )
+
+# Create your models here.
+
+class Cache(models.Model):
+    lieu = models.CharField(max_length=255,null=False)
+    image = models.CharField(max_length=255,null=False)
+
+    chasses = models.ManyToManyField(
+        settings.AUTH_USER_MODEL,
+        related_name="caches_chasses"
+    )
