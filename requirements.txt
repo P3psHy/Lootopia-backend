@@ -10,3 +10,5 @@ PyJWT==2.9.0
 python-dotenv==1.0.1
 sqlparse==0.5.3
 django-cors-headers==3.14.0
+gunicorn==21.2.0
+drf-yasg==1.21.10
