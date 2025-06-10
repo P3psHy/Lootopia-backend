@@ -49,11 +49,6 @@ class ChasseSerializer(serializers.ModelSerializer):
         fields = '__all__'
 
 class CacheSerializer(serializers.ModelSerializer):
-    chasses = serializers.PrimaryKeyRelatedField(
-        many=True,
-        queryset=Chasse.objects.all()
-    )
-
     class Meta:
         model = Cache
         fields = '__all__'

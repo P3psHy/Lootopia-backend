@@ -16,8 +16,8 @@ class ListCacheAPIView(APIView):
     
 
 class CacheAPIView(APIView):
-    def get(self, request, petition_id):  # Ajoute `petition_id` en argument
-        cache = get_object_or_404(Cache, id=petition_id)
+    def get(self, request, cache_id):  # Ajoute `petition_id` en argument
+        cache = get_object_or_404(Cache, id=cache_id)
         serializer = CacheSerializer(cache)
         return Response(serializer.data, status=status.HTTP_200_OK)
     
@@ -40,7 +40,7 @@ class EditCacheAPIView(APIView):
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
     
 class DeleteCacheAPIView(APIView):
-    def delete(self, request, chasse_id):
-        cache = get_object_or_404(Cache, id=chasse_id)
+    def delete(self, request, cache_id):
+        cache = get_object_or_404(Cache, id=cache_id)
         cache.delete()
         return Response({"message": "Cache supprimée avec succès."}, status=status.HTTP_204_NO_CONTENT)

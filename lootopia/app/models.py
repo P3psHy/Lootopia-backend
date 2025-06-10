@@ -64,7 +64,7 @@ class Chasse(models.Model):
     )
 
     participants = models.ManyToManyField(
-        settings.AUTH_USER_MODEL,
+        "Cache",
         related_name="chasses_participants"
     )
 
@@ -78,8 +78,3 @@ class Chasse(models.Model):
 class Cache(models.Model):
     lieu = models.CharField(max_length=255,null=False)
     image = models.CharField(max_length=255,null=False)
-
-    chasses = models.ManyToManyField(
-        settings.AUTH_USER_MODEL,
-        related_name="caches_chasses"
-    )
