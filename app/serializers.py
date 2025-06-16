@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from .models import Role, User, Chasse, Cache, Theme
+from .models import Role, User, Chasse, Cache, Theme, Etape
 
 class RoleSerializer(serializers.ModelSerializer):
     class Meta:
@@ -56,4 +56,9 @@ class CacheSerializer(serializers.ModelSerializer):
 class ThemeSerializer(serializers.ModelSerializer):
     class Meta:
         model = Theme
+        fields = '__all__'
+
+class EtapeSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Etape
         fields = '__all__'

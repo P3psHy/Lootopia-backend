@@ -21,6 +21,11 @@ from app.views.user_view import UserCreateAPIView
 from app.views.chasse_view import ListChasseAPIView, CreateChasseApiView, ChasseAPIView, EditChasseAPIView, DeleteChasseAPIView
 from app.views.theme_view import ListThemeAPIView, CreateThemeAPIView, ThemeAPIView, EditThemeAPIView, DeleteThemeAPIView
 from app.views.cache_view import ListCacheAPIView, CreateCacheApiView, CacheAPIView, EditCacheAPIView, DeleteCacheAPIView
+from app.views.etape_view import ListEtapeAPIView, CreateEtapeAPIView, EtapeAPIView, EditEtapeAPIView, DeleteEtapeAPIView
+
+
+
+
 
 urlpatterns = [
     path('admin/', admin.site.urls),
@@ -54,4 +59,12 @@ urlpatterns = [
     path('api/theme/<int:theme_id>/', ThemeAPIView.as_view(), name='theme-detail'),
     path('api/theme/<int:theme_id>/edit/', EditThemeAPIView.as_view(), name='theme-edit'),
     path('api/theme/<int:theme_id>/delete/', DeleteThemeAPIView.as_view(), name='theme-delete'),
+
+    # Etape
+    path('api/etape/', ListEtapeAPIView.as_view(), name='etape-list'),
+    path('api/etape/create/', CreateEtapeAPIView.as_view(), name='etape-create'),
+    path('api/etape/<int:etape_id>/', EtapeAPIView.as_view(), name='etape-detail'),
+    path('api/etape/<int:etape_id>/edit/', EditEtapeAPIView.as_view(), name='etape-edit'),
+    path('api/etape/<int:etape_id>/delete/', DeleteEtapeAPIView.as_view(), name='etape-delete'),
+
 ]

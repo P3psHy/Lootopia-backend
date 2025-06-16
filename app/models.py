@@ -35,6 +35,7 @@ class User(AbstractBaseUser, PermissionsMixin):
     creerChasse = models.BooleanField(default=False)
     date_activation = models.DateTimeField(default=timezone.now)
     date_desactivation = models.DateTimeField(null=True, blank=True)
+    solde_coronne = models.FloatField(default=0.0)
 
     USERNAME_FIELD = "pseudo"
     REQUIRED_FIELDS = ["mail"]
@@ -80,8 +81,6 @@ class Chasse(models.Model):
         related_name="chasses_themes"
     )
 
-# Create your models here.
-
 class Cache(models.Model):
     lieu = models.CharField(max_length=255,null=False)
     image = models.CharField(max_length=255,null=False)
@@ -93,3 +92,20 @@ class Theme(models.Model):
 
     def __str__(self):
         return self.titre
+    
+class Etape(models.Model):
+    nom = models.CharField(max_length=255, null=False)
+
+    participants = models.ManyToManyField(
+        settings.AUTH_USER_MODEL,
+        related_name="etapes_participants"
+    )
+
+    chasse = models.ForeignKey(
+        "Chasse",  
+        on_delete=models.CASCADE,
+        related_name="etapes"
+    )
+
+    def __str__(self):
+        return self.nom
