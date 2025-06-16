@@ -57,20 +57,27 @@ class Chasse(models.Model):
     est_prive = models.BooleanField(null=False)
     messagerie_est_actif = models.BooleanField(null=False)
 
+    # Désigne le créateur de la chasse
     createur = models.ForeignKey(
-        settings.AUTH_USER_MODEL,  # référence à ton User personnalisé
+        settings.AUTH_USER_MODEL,  
         on_delete=models.CASCADE,
-        related_name="chasses_crees"
+        related_name="chasse_createur"
     )
 
+    # Liste les participants à la chasse
     participants = models.ManyToManyField(
-        "Cache",
+        settings.AUTH_USER_MODEL,
         related_name="chasses_participants"
     )
 
     caches = models.ManyToManyField(
-        settings.AUTH_USER_MODEL,
+        "Cache",
         related_name="chasses_caches"
+    )
+
+    themes = models.ManyToManyField(
+        "Theme",
+        related_name="chasses_themes"
     )
 
 # Create your models here.
@@ -78,3 +85,11 @@ class Chasse(models.Model):
 class Cache(models.Model):
     lieu = models.CharField(max_length=255,null=False)
     image = models.CharField(max_length=255,null=False)
+    def __str__(self):
+        return self.lieu
+
+class Theme(models.Model):
+    titre = models.CharField(max_length=255, null=False)
+
+    def __str__(self):
+        return self.titre

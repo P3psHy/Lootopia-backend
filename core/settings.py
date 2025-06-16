@@ -18,18 +18,19 @@ import os
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
+env = environ.Env()
+environ.Env.read_env()
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/5.1/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-6ge*c-qdu7^!gxg@apl*928j(*b5@%5&6e9_1sq+(cj%_^4s!f'
+DEBUG = env.bool("DEBUG", default=False)
+ALLOWED_HOSTS = env.list("ALLOWED_HOSTS", default=["localhost"])
+# ALLOWED_HOSTS = ['localhost', '.onrender.com', '127.0.0.1']
 
-# SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
-
-ALLOWED_HOSTS = ["localhost","127.0.0.1"]
-
+APPEND_SLASH = True
+SECRET_KEY = env("SECRET_KEY")
 
 # Application definition
 
@@ -40,6 +41,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'rest_framework',                # <-- Ajouté ici
     'rest_framework_simplejwt',
     'app',
     'corsheaders',
@@ -50,9 +52,13 @@ REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': [
         'rest_framework_simplejwt.authentication.JWTAuthentication',
     ],
+    'DEFAULT_RENDERER_CLASSES': [
+        'rest_framework.renderers.JSONRenderer',
+    ],
 }
 
 MIDDLEWARE = [
+    'corsheaders.middleware.CorsMiddleware',
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'corsheaders.middleware.CorsMiddleware',
@@ -63,7 +69,15 @@ MIDDLEWARE = [
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
 
-ROOT_URLCONF = 'lootopia.urls'
+CORS_ALLOW_ALL_ORIGINS = True
+
+# CORS_ALLOWED_ORIGINS = [
+#     "http://localhost:3000/",  # pour ton front local React par ex
+#     "http://127.0.0.1:8000/",  # si t’as un autre service local
+#     "https://ton-site-flutter.web.app/",  # ou ton domaine hébergé
+# ]
+
+ROOT_URLCONF = 'core.urls'
 
 TEMPLATES = [
     {
@@ -81,14 +95,13 @@ TEMPLATES = [
     },
 ]
 
-WSGI_APPLICATION = 'lootopia.wsgi.application'
+WSGI_APPLICATION = 'core.wsgi.application'
 
 
 # Database
 # https://docs.djangoproject.com/en/3.2/ref/settings/#databases
 
-env = environ.Env()
-environ.Env.read_env()
+
 
 DATABASES = {
     'default': {

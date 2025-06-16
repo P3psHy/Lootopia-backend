@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from .models import Role, User, Chasse, Cache
+from .models import Role, User, Chasse, Cache, Theme
 
 class RoleSerializer(serializers.ModelSerializer):
     class Meta:
@@ -51,4 +51,9 @@ class ChasseSerializer(serializers.ModelSerializer):
 class CacheSerializer(serializers.ModelSerializer):
     class Meta:
         model = Cache
+        fields = '__all__'
+
+class ThemeSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Theme
         fields = '__all__'

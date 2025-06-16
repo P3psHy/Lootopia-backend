@@ -13,16 +13,16 @@ from django.shortcuts import get_object_or_404
 from app.models import Chasse, User
 
 
-class ListPetitionAPIView(APIView):
+class ListChasseAPIView(APIView):
     def get(self, request):
         chasses = Chasse.objects.all()
         serializer = ChasseSerializer(chasses, many=True)
         return Response(serializer.data, status=status.HTTP_200_OK)
     
 
-class PetitionAPIView(APIView):
-    def get(self, request, petition_id):  # Ajoute `petition_id` en argument
-        chasse = get_object_or_404(Chasse, id=petition_id)
+class ChasseAPIView(APIView):
+    def get(self, request, chasse_id): 
+        chasse = get_object_or_404(Chasse, id=chasse_id)
         serializer = ChasseSerializer(chasse)
         return Response(serializer.data, status=status.HTTP_200_OK)
     
@@ -36,7 +36,6 @@ class CreateChasseApiView(APIView):
 
 class EditChasseAPIView(APIView):
     def put(self, request, chasse_id):
-        # 👇 PATCH-like comportement (partial=True)
         chasse = get_object_or_404(Chasse, id=chasse_id)
         serializer = ChasseSerializer(chasse, data=request.data, partial=True)
         if serializer.is_valid():
