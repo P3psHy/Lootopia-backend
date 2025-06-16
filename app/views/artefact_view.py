@@ -1,7 +1,7 @@
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status
-from app.serializers import ThemeSerializer
+from app.serializers import artefactSerializer
 from rest_framework.pagination import PageNumberPagination
 from rest_framework.generics import ListAPIView
 from rest_framework.permissions import IsAuthenticated
@@ -9,41 +9,39 @@ from rest_framework.permissions import IsAuthenticated
 from datetime import datetime, timedelta
 
 from django.shortcuts import get_object_or_404
-from app.models import Theme
+from app.models import Artefact
 
-
-class ListThemeAPIView(APIView):
+class ListArtefactAPIView(APIView):
     def get(self, request):
-        themes = Theme.objects.all()
-        serializer = ThemeSerializer(themes, many=True)
+        artefacts = Artefact.objects.all()
+        serializer = artefactSerializer(artefacts, many=True)
         return Response(serializer.data, status=status.HTTP_200_OK)
     
-
-class ThemeAPIView(APIView):
-    def get(self, request, theme_id):
-        themes = get_object_or_404(themes, id=theme_id)
-        serializer = ThemeSerializer(themes)
+class ArtefactAPIView(APIView):
+    def get(self, request, artefact_id):
+        artefact = get_object_or_404(Artefact, id=artefact_id)
+        serializer = artefactSerializer(artefact)
         return Response(serializer.data, status=status.HTTP_200_OK)
     
-class CreateThemeAPIView(APIView):
+class CreateArtefactAPIView(APIView):
     def post(self, request):
-        serializer = ThemeSerializer(data=request.data)
+        serializer = artefactSerializer(data=request.data)
         if serializer.is_valid():
             serializer.save()
             return Response(serializer.data, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-
-class EditThemeAPIView(APIView):
-    def put(self, request, theme_id):
-        theme = get_object_or_404(Theme, id=theme_id)
-        serializer = ThemeSerializer(theme, data=request.data, partial=True)
+    
+class EditArtefactAPIView(APIView):
+    def put(self, request, artefact_id):
+        artefact = get_object_or_404(Artefact, id=artefact_id)
+        serializer = artefactSerializer(artefact, data=request.data, partial=True)
         if serializer.is_valid():
             serializer.save()
             return Response(serializer.data, status=status.HTTP_200_OK)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
     
-class DeleteThemeAPIView(APIView):
-    def delete(self, request, theme_id):
-        theme = get_object_or_404(Theme, id=theme_id)
-        theme.delete()
-        return Response({"message": "Theme supprimée avec succès."}, status=status.HTTP_204_NO_CONTENT)
+class DeleteArtefactAPIView(APIView):
+    def delete(self, request, artefact_id):
+        artefact = get_object_or_404(Artefact, id=artefact_id)
+        artefact.delete()
+        return Response({"message": "Artefact supprimé avec succès."}, status=status.HTTP_204_NO_CONTENT)

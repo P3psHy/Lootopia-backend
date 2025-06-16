@@ -22,8 +22,8 @@ from app.views.chasse_view import ListChasseAPIView, CreateChasseApiView, Chasse
 from app.views.theme_view import ListThemeAPIView, CreateThemeAPIView, ThemeAPIView, EditThemeAPIView, DeleteThemeAPIView
 from app.views.cache_view import ListCacheAPIView, CreateCacheApiView, CacheAPIView, EditCacheAPIView, DeleteCacheAPIView
 from app.views.etape_view import ListEtapeAPIView, CreateEtapeAPIView, EtapeAPIView, EditEtapeAPIView, DeleteEtapeAPIView
-
-
+from app.views.recompense_view import ListRecompenseAPIView, RecompenseAPIView, CreateRecompenseAPIView, EditRecompenseAPIView, DeleteRecompenseAPIView
+from app.views.artefact_view import ListArtefactAPIView, CreateArtefactAPIView, ArtefactAPIView, EditArtefactAPIView, DeleteArtefactAPIView
 
 
 
@@ -66,5 +66,19 @@ urlpatterns = [
     path('api/etape/<int:etape_id>/', EtapeAPIView.as_view(), name='etape-detail'),
     path('api/etape/<int:etape_id>/edit/', EditEtapeAPIView.as_view(), name='etape-edit'),
     path('api/etape/<int:etape_id>/delete/', DeleteEtapeAPIView.as_view(), name='etape-delete'),
+
+    # Recompense
+    path('api/recompense/', ListRecompenseAPIView.as_view(), name='recompense-list'),
+    path('api/recompense/create/', CreateRecompenseAPIView.as_view(), name='recompense-create'),
+    path('api/recompense/<int:recompense_id>/', RecompenseAPIView.as_view(), name='recompense-detail'),
+    path('api/recompense/<int:recompense_id>/edit/', EditRecompenseAPIView.as_view(), name='recompense-edit'),
+    path('api/recompense/<int:recompense_id>/delete/', DeleteRecompenseAPIView.as_view(), name='recompense-delete'),
+
+    # Artefact
+    path('api/artefact/', ListArtefactAPIView.as_view(), name='artefact-list'),
+    path('api/artefact/create/', CreateArtefactAPIView.as_view(), name='artefact-create'),
+    path('api/artefact/<int:artefact_id>/', ArtefactAPIView.as_view(), name='artefact-detail'),
+    path('api/artefact/<int:artefact_id>/edit/', EditArtefactAPIView.as_view(), name='artefact-edit'),
+    path('api/artefact/<int:artefact_id>/delete/', DeleteArtefactAPIView.as_view(), name='artefact-delete'),
 
 ]
