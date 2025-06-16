@@ -15,9 +15,10 @@ Including another URLconf
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
 from django.contrib import admin
-from django.urls import path
+from django.urls import path, re_path
 from app.views.auth_views import RegisterAPIView, LoginView, VerifyTokenAPIView
 from app.views.user_view import UserCreateAPIView
+from app.views.landing_view import home_view
 from app.views.chasse_view import ListChasseAPIView, CreateChasseApiView, ChasseAPIView, EditChasseAPIView, DeleteChasseAPIView
 from app.views.theme_view import ListThemeAPIView, CreateThemeAPIView, ThemeAPIView, EditThemeAPIView, DeleteThemeAPIView
 from app.views.cache_view import ListCacheAPIView, CreateCacheApiView, CacheAPIView, EditCacheAPIView, DeleteCacheAPIView
@@ -26,8 +27,27 @@ from app.views.recompense_view import ListRecompenseAPIView, RecompenseAPIView, 
 from app.views.artefact_view import ListArtefactAPIView, CreateArtefactAPIView, ArtefactAPIView, EditArtefactAPIView, DeleteArtefactAPIView
 from app.views.message_view import ListMessageAPIView, CreateMessageAPIView, MessageAPIView, EditMessageAPIView, DeleteMessageAPIView
 
+# Pour Swagger
+from drf_yasg.views import get_schema_view
+from drf_yasg import openapi
+from rest_framework import permissions
+
+schema_view = get_schema_view(
+   openapi.Info(
+      title="Lootopia API",
+      default_version='v1',
+      description="Documentation interactive de l'API Lootopia",
+   ),
+   public=True,
+   permission_classes=(permissions.AllowAny,),
+)
+
+
 
 urlpatterns = [
+
+    path('', home_view),
+
     path('admin/', admin.site.urls),
 
     # Authentification
@@ -87,4 +107,8 @@ urlpatterns = [
     path('api/message/<int:message_id>/', MessageAPIView.as_view(), name='message-detail'),
     path('api/message/<int:message_id>/edit/', EditMessageAPIView.as_view(), name='message-edit'),
     path('api/message/<int:message_id>/delete/', DeleteMessageAPIView.as_view(), name='message-delete'),
+
+        # Routes Swagger
+    re_path(r'^swagger/$', schema_view.with_ui('swagger', cache_timeout=0), name='schema-swagger-ui'),
+    re_path(r'^redoc/$', schema_view.with_ui('redoc', cache_timeout=0), name='schema-redoc'),
 ]
