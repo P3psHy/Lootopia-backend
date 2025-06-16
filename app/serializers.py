@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from .models import Role, User, Chasse, Cache, Theme, Etape, Recompense, Artefact
+from .models import Role, User, Chasse, Cache, Theme, Etape, Recompense, Artefact, Message
 
 class RoleSerializer(serializers.ModelSerializer):
     class Meta:
@@ -71,4 +71,9 @@ class RecompenseSerializer(serializers.ModelSerializer):
 class artefactSerializer(serializers.ModelSerializer):
     class Meta:
         model = Artefact
+        fields = '__all__'
+
+class messageSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Message
         fields = '__all__'

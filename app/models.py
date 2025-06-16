@@ -142,3 +142,20 @@ class Recompense(models.Model):
     )
     def __str__(self):
         return self.nom
+    
+class Message(models.Model):
+    contenu = models.TextField(null=False)
+    date_heure = models.DateTimeField(auto_now_add=True)
+    auteur = models.ForeignKey(
+        settings.AUTH_USER_MODEL,
+        on_delete=models.CASCADE,
+        related_name="messages_envoyes"
+    )
+    chasse = models.ForeignKey(
+        "Chasse",
+        on_delete=models.CASCADE,
+        related_name="messagerie_chasse"
+    )
+
+    def __str__(self):
+        return f"{self.auteur} -> {self.chasse} : {self.contenu[:30]}"

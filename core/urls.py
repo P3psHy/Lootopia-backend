@@ -24,7 +24,7 @@ from app.views.cache_view import ListCacheAPIView, CreateCacheApiView, CacheAPIV
 from app.views.etape_view import ListEtapeAPIView, CreateEtapeAPIView, EtapeAPIView, EditEtapeAPIView, DeleteEtapeAPIView
 from app.views.recompense_view import ListRecompenseAPIView, RecompenseAPIView, CreateRecompenseAPIView, EditRecompenseAPIView, DeleteRecompenseAPIView
 from app.views.artefact_view import ListArtefactAPIView, CreateArtefactAPIView, ArtefactAPIView, EditArtefactAPIView, DeleteArtefactAPIView
-
+from app.views.message_view import ListMessageAPIView, CreateMessageAPIView, MessageAPIView, EditMessageAPIView, DeleteMessageAPIView
 
 
 urlpatterns = [
@@ -81,4 +81,10 @@ urlpatterns = [
     path('api/artefact/<int:artefact_id>/edit/', EditArtefactAPIView.as_view(), name='artefact-edit'),
     path('api/artefact/<int:artefact_id>/delete/', DeleteArtefactAPIView.as_view(), name='artefact-delete'),
 
+    # Message
+    path('api/message/', ListMessageAPIView.as_view(), name='message-list'),
+    path('api/message/create/', CreateMessageAPIView.as_view(), name='message-create'),
+    path('api/message/<int:message_id>/', MessageAPIView.as_view(), name='message-detail'),
+    path('api/message/<int:message_id>/edit/', EditMessageAPIView.as_view(), name='message-edit'),
+    path('api/message/<int:message_id>/delete/', DeleteMessageAPIView.as_view(), name='message-delete'),
 ]
