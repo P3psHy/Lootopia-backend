@@ -67,17 +67,26 @@ class Chasse(models.Model):
     # Liste les participants à la chasse
     participants = models.ManyToManyField(
         settings.AUTH_USER_MODEL,
-        related_name="chasse_participants"
+        related_name="chasses_participants"
     )
 
-    # Liste les thèmes attribués à la chasse
+    caches = models.ManyToManyField(
+        "Cache",
+        related_name="chasses_caches"
+    )
+
     themes = models.ManyToManyField(
         "Theme",
-        related_name="chasse_themes"
+        related_name="chasses_themes"
     )
 
+# Create your models here.
+
+class Cache(models.Model):
+    lieu = models.CharField(max_length=255,null=False)
+    image = models.CharField(max_length=255,null=False)
     def __str__(self):
-        return self.titre
+        return self.lieu
 
 class Theme(models.Model):
     titre = models.CharField(max_length=255, null=False)

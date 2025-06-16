@@ -20,6 +20,7 @@ from app.views.auth_views import RegisterAPIView, LoginView, VerifyTokenAPIView
 from app.views.user_view import UserCreateAPIView
 from app.views.chasse_view import ListChasseAPIView, CreateChasseApiView, ChasseAPIView, EditChasseAPIView, DeleteChasseAPIView
 from app.views.theme_view import ListThemeAPIView, CreateThemeAPIView, ThemeAPIView, EditThemeAPIView, DeleteThemeAPIView
+from app.views.cache_view import ListCacheAPIView, CreateCacheApiView, CacheAPIView, EditCacheAPIView, DeleteCacheAPIView
 
 urlpatterns = [
     path('admin/', admin.site.urls),
@@ -39,6 +40,13 @@ urlpatterns = [
     path('api/chasse/<int:chasse_id>/', ChasseAPIView.as_view(), name='chasse-detail'),
     path('api/chasse/<int:chasse_id>/edit/', EditChasseAPIView.as_view(), name='chasse-edit'),
     path('api/chasse/<int:chasse_id>/delete/', DeleteChasseAPIView.as_view(), name='chasse-delete'),
+
+    # Cache
+    path('api/cache/', ListCacheAPIView.as_view(), name='cache-list'),
+    path('api/cache/create/', CreateCacheApiView.as_view(), name='cache-create'),
+    path('api/cache/<int:cache_id>/', CacheAPIView.as_view(), name='cache-detail'),
+    path('api/cache/<int:cache_id>/edit/', EditCacheAPIView.as_view(), name='cache-edit'),
+    path('api/cache/<int:cache_id>/delete/', DeleteCacheAPIView.as_view(), name='cache-delete'),
 
     # Theme
     path('api/theme/', ListThemeAPIView.as_view(), name='theme-list'),
