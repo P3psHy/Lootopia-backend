@@ -109,3 +109,36 @@ class Etape(models.Model):
 
     def __str__(self):
         return self.nom
+    
+class Artefact(models.Model):
+    nom = models.CharField(max_length=255, null=False)
+    valeur = models.CharField(max_length=255, null=False)
+
+    recompense = models.OneToOneField(
+            "Recompense",
+            on_delete=models.CASCADE,
+            null=True,
+        )
+    
+    possesseur = models.ForeignKey(
+        settings.AUTH_USER_MODEL,
+        on_delete=models.CASCADE,
+        related_name="artefacts_possesseur",
+        null=True,
+    )
+    
+    def __str__(self):
+        return self.nom
+    
+class Recompense(models.Model):
+    nom = models.CharField(max_length=255, null=False)
+    type = models.CharField(max_length=255, null=False)
+    valeur = models.FloatField(null=False)
+    
+    cache = models.ForeignKey(
+        Cache,
+        on_delete=models.CASCADE,
+        related_name="recompenses"
+    )
+    def __str__(self):
+        return self.nom
