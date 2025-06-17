@@ -39,11 +39,11 @@ class RegisterAPIView(APIView):
 
 class LoginView(APIView):
     def post(self, request):
-        pseudo = request.data.get("pseudo")
+        mail = request.data.get("mail")
         password = request.data.get("password")
 
         try:
-            user = User.objects.get(pseudo=pseudo)
+            user = User.objects.get(mail=mail)
         except User.DoesNotExist:
             return Response({"error": "Utilisateur non trouvé"}, status=status.HTTP_404_NOT_FOUND)
 
