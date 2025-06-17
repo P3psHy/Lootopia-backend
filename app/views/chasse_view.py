@@ -8,7 +8,7 @@ from rest_framework.generics import ListAPIView
 from rest_framework.permissions import IsAuthenticated
 
 from datetime import datetime, timedelta
-
+from drf_yasg.utils import swagger_auto_schema
 from django.shortcuts import get_object_or_404
 from app.models import Chasse, User
 
@@ -27,6 +27,7 @@ class ChasseAPIView(APIView):
         return Response(serializer.data, status=status.HTTP_200_OK)
     
 class CreateChasseApiView(APIView):
+    @swagger_auto_schema(request_body=ChasseSerializer)
     def post(self, request):
         serializer = ChasseSerializer(data=request.data)
         if serializer.is_valid():
@@ -35,6 +36,7 @@ class CreateChasseApiView(APIView):
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 class EditChasseAPIView(APIView):
+    @swagger_auto_schema(request_body=ChasseSerializer)
     def put(self, request, chasse_id):
         chasse = get_object_or_404(Chasse, id=chasse_id)
         serializer = ChasseSerializer(chasse, data=request.data, partial=True)

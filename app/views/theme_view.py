@@ -7,6 +7,7 @@ from rest_framework.generics import ListAPIView
 from rest_framework.permissions import IsAuthenticated
 
 from datetime import datetime, timedelta
+from drf_yasg.utils import swagger_auto_schema
 
 from django.shortcuts import get_object_or_404
 from app.models import Theme
@@ -26,6 +27,7 @@ class ThemeAPIView(APIView):
         return Response(serializer.data, status=status.HTTP_200_OK)
     
 class CreateThemeAPIView(APIView):
+    @swagger_auto_schema(request_body=ThemeSerializer)
     def post(self, request):
         serializer = ThemeSerializer(data=request.data)
         if serializer.is_valid():
@@ -34,6 +36,7 @@ class CreateThemeAPIView(APIView):
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 class EditThemeAPIView(APIView):
+    @swagger_auto_schema(request_body=ThemeSerializer)
     def put(self, request, theme_id):
         theme = get_object_or_404(Theme, id=theme_id)
         serializer = ThemeSerializer(theme, data=request.data, partial=True)

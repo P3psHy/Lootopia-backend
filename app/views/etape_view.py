@@ -10,7 +10,7 @@ from rest_framework.generics import ListAPIView
 from rest_framework.permissions import IsAuthenticated
 
 from datetime import datetime, timedelta
-
+from drf_yasg.utils import swagger_auto_schema
 from django.shortcuts import get_object_or_404
 
 class ListEtapeAPIView(APIView):
@@ -26,6 +26,7 @@ class EtapeAPIView(APIView):
         return Response(serializer.data, status=status.HTTP_200_OK)
     
 class CreateEtapeAPIView(APIView):
+    @swagger_auto_schema(request_body=EtapeSerializer)
     def post(self, request):
         serializer = EtapeSerializer(data=request.data)
         if serializer.is_valid():
@@ -34,6 +35,7 @@ class CreateEtapeAPIView(APIView):
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
     
 class EditEtapeAPIView(APIView):
+    @swagger_auto_schema(request_body=EtapeSerializer)
     def put(self, request, etape_id):
         etape = get_object_or_404(Etape, id=etape_id)
         serializer = EtapeSerializer(etape, data=request.data, partial=True)

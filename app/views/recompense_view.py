@@ -8,6 +8,7 @@ from rest_framework.generics import ListAPIView
 from rest_framework.permissions import IsAuthenticated
 
 from datetime import datetime, timedelta
+from drf_yasg.utils import swagger_auto_schema
 
 from django.shortcuts import get_object_or_404
 from app.models import Theme
@@ -25,6 +26,7 @@ class RecompenseAPIView(APIView):
         return Response(serializer.data, status=status.HTTP_200_OK)
     
 class CreateRecompenseAPIView(APIView):
+    @swagger_auto_schema(request_body=RecompenseSerializer)
     def post(self, request):
         serializer = RecompenseSerializer(data=request.data)
         if serializer.is_valid():
@@ -33,6 +35,7 @@ class CreateRecompenseAPIView(APIView):
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
     
 class EditRecompenseAPIView(APIView):
+    @swagger_auto_schema(request_body=RecompenseSerializer)
     def put(self, request, recompense_id):
         recompense = get_object_or_404(Recompense, id=recompense_id)
         serializer = RecompenseSerializer(recompense, data=request.data, partial=True)

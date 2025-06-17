@@ -6,15 +6,20 @@ class RoleSerializer(serializers.ModelSerializer):
         model = Role
         fields = '__all__'  # Inclut tous les champs du modèle
 
+class LoginSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = User
+        fields = ['mail', 'password']
+        extra_kwargs = {'password': {'write_only': True}}
+
 class UserSerializer(serializers.ModelSerializer):
-    role = RoleSerializer(read_only=True)
     role_id = serializers.PrimaryKeyRelatedField(
         queryset=Role.objects.all(), source='role', write_only=True
     )
 
     class Meta:
         model = User
-        fields = ['id', 'pseudo', 'mail', 'password', 'role', 'role_id']
+        fields = ['id', 'pseudo', 'mail', 'password', 'role_id']
         extra_kwargs = {'password': {'write_only': True}}
 
     def create(self, validated_data):
@@ -68,12 +73,12 @@ class RecompenseSerializer(serializers.ModelSerializer):
         model = Recompense
         fields = '__all__'
 
-class artefactSerializer(serializers.ModelSerializer):
+class ArtefactSerializer(serializers.ModelSerializer):
     class Meta:
         model = Artefact
         fields = '__all__'
 
-class messageSerializer(serializers.ModelSerializer):
+class MessageSerializer(serializers.ModelSerializer):
     class Meta:
         model = Message
         fields = '__all__'

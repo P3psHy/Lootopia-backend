@@ -4,11 +4,15 @@ from rest_framework.response import Response
 from rest_framework import status
 from ..models import User, Role
 from ..serializers import UserSerializer
+from ..serializers import LoginSerializer
 from rest_framework_simplejwt.tokens import RefreshToken
 from rest_framework_simplejwt.authentication import JWTAuthentication
 from rest_framework.permissions import IsAuthenticated
+from drf_yasg.utils import swagger_auto_schema
+
 
 class RegisterAPIView(APIView):
+    @swagger_auto_schema(request_body=UserSerializer)
     def post(self, request):
         pseudo = request.data.get("pseudo")
         mail = request.data.get("mail")
@@ -27,17 +31,19 @@ class RegisterAPIView(APIView):
         # Vérifier si le rôle existe, sinon mettre un rôle par défaut
         role = Role.objects.get(id=id_role) if Role.objects.filter(id=id_role).exists() else Role.objects.first()
 
-        user = User.objects.create(
+        user = User(
             pseudo=pseudo,
             mail=mail,
-            password=hashed_password,
             role=role
         )
+        user.set_password(password)  # Hash le mot de passe
+        user.save()
 
         return Response({"message": "Compte créé avec succès", "user": UserSerializer(user).data}, status=status.HTTP_201_CREATED)
 
 
 class LoginView(APIView):
+    @swagger_auto_schema(request_body=LoginSerializer)
     def post(self, request):
         mail = request.data.get("mail")
         password = request.data.get("password")
@@ -48,7 +54,8 @@ class LoginView(APIView):
             return Response({"error": "Utilisateur non trouvé"}, status=status.HTTP_404_NOT_FOUND)
 
         # Vérification du mot de passe
-        if not bcrypt.checkpw(password.encode('utf-8'), user.password.encode('utf-8')):
+        # if not bcrypt.checkpw(password.encode('utf-8'), user.password.encode('utf-8')):
+        if not user.check_password(password):
             return Response({"error": "Mot de passe incorrect"}, status=status.HTTP_400_BAD_REQUEST)
 
         # Génération du JWT
