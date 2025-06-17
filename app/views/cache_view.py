@@ -3,7 +3,7 @@ from rest_framework.response import Response
 from rest_framework import status
 from app.models import Cache
 from app.serializers import CacheSerializer
-
+from drf_yasg.utils import swagger_auto_schema
 from django.shortcuts import get_object_or_404
 from app.models import Cache
 
@@ -22,6 +22,7 @@ class CacheAPIView(APIView):
         return Response(serializer.data, status=status.HTTP_200_OK)
     
 class CreateCacheApiView(APIView):
+    @swagger_auto_schema(request_body=CacheSerializer)
     def post(self, request):
         serializer = CacheSerializer(data=request.data)
         if serializer.is_valid():
@@ -30,6 +31,7 @@ class CreateCacheApiView(APIView):
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 class EditCacheAPIView(APIView):
+    @swagger_auto_schema(request_body=CacheSerializer)
     def put(self, request, cache_id):
         # 👇 PATCH-like comportement (partial=True)
         cache = get_object_or_404(Cache, id=cache_id)

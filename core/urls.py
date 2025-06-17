@@ -17,7 +17,7 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path, re_path
 from app.views.auth_views import RegisterAPIView, LoginView, VerifyTokenAPIView
-from app.views.user_view import UserCreateAPIView
+from app.views.user_view import ListUserAPIView, UserCreateAPIView, UserAPIView, UserEditAPIView, UserDeleteAPIView
 from app.views.landing_view import home_view
 from app.views.chasse_view import ListChasseAPIView, CreateChasseApiView, ChasseAPIView, EditChasseAPIView, DeleteChasseAPIView
 from app.views.theme_view import ListThemeAPIView, CreateThemeAPIView, ThemeAPIView, EditThemeAPIView, DeleteThemeAPIView
@@ -55,8 +55,12 @@ urlpatterns = [
     path('api/user/login', LoginView.as_view(), name='login'),
     path('api/user/verify', VerifyTokenAPIView.as_view(), name='verify-token'),
 
-    # User Creation
-    path('user/create/', UserCreateAPIView.as_view(), name='user-create'),
+    # User
+    path('api/user/', ListUserAPIView.as_view(), name='user-list'),
+    path('api/user/create/', UserCreateAPIView.as_view(), name='user-create'),
+    path('api/user/<int:user_id>/', UserAPIView.as_view(), name='user-detail'),
+    path('api/user/<int:user_id>/edit/', UserEditAPIView.as_view(), name='user-edit'),
+    path('api/user/<int:user_id>/delete/', UserDeleteAPIView.as_view(), name='user-delete'),
 
 
     # Chasse
