@@ -49,8 +49,10 @@ class User(AbstractBaseUser, PermissionsMixin):
 
 class Chasse(models.Model):
     titre = models.CharField(max_length=255,null=False)
+    description = models.TextField(null=True)
     couleur = models.CharField(max_length=16,null=False)
     prix = models.FloatField(null=False)
+    date_debut = models.DateTimeField(null=True)
     date_fin = models.DateTimeField(null=False)
     nombre_participant = models.IntegerField(null=False)
     lieu = models.CharField(max_length=255)
