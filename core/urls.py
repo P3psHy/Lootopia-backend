@@ -70,6 +70,11 @@ urlpatterns = [
     path('api/chasse/<int:chasse_id>/edit/', EditChasseAPIView.as_view(), name='chasse-edit'),
     path('api/chasse/<int:chasse_id>/delete/', DeleteChasseAPIView.as_view(), name='chasse-delete'),
 
+    #Chasse côté utilisateur
+    path('chasses/<int:chasse_id>/join/', JoinChasseAPIView.as_view(), name='join-chasse'),
+    path('chasses/<int:chasse_id>/leave/', LeaveChasseAPIView.as_view(), name='leave-chasse'),
+    path('users/<int:user_id>/chasses/', UserChassesAPIView.as_view(), name='user-chasses'),
+
     # Cache
     path('api/cache/', ListCacheAPIView.as_view(), name='cache-list'),
     path('api/cache/create/', CreateCacheApiView.as_view(), name='cache-create'),
