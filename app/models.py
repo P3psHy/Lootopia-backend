@@ -35,7 +35,7 @@ class User(AbstractBaseUser, PermissionsMixin):
     creerChasse = models.BooleanField(default=False)
     date_activation = models.DateTimeField(default=timezone.now)
     date_desactivation = models.DateTimeField(null=True, blank=True)
-    solde_coronne = models.FloatField(default=0.0)
+    solde_couronne = models.FloatField(default=0.0)
 
     USERNAME_FIELD = "pseudo"
     REQUIRED_FIELDS = ["mail"]

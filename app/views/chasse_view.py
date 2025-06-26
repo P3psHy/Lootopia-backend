@@ -2,7 +2,7 @@ from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status
 from app.models import Chasse
-from app.serializers import ChasseSerializer
+from app.serializers import ChasseSerializer, ChasseGetSerializer
 from rest_framework.pagination import PageNumberPagination
 from rest_framework.generics import ListAPIView
 from rest_framework.permissions import IsAuthenticated
@@ -16,14 +16,14 @@ from app.models import Chasse, User
 class ListChasseAPIView(APIView):
     def get(self, request):
         chasses = Chasse.objects.all()
-        serializer = ChasseSerializer(chasses, many=True)
+        serializer = ChasseGetSerializer(chasses, many=True)
         return Response(serializer.data, status=status.HTTP_200_OK)
     
 
 class ChasseAPIView(APIView):
     def get(self, request, chasse_id): 
         chasse = get_object_or_404(Chasse, id=chasse_id)
-        serializer = ChasseSerializer(chasse)
+        serializer = ChasseGetSerializer(chasse)
         return Response(serializer.data, status=status.HTTP_200_OK)
     
 class CreateChasseApiView(APIView):
