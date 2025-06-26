@@ -14,6 +14,15 @@ class UserManager(BaseUserManager):
         if not mail:
             raise ValueError("L'adresse email est obligatoire")
         mail = self.normalize_email(mail)
+        
+        # Créer ou récupérer un rôle par défaut si aucun n'est fourni
+        if 'role' not in extra_fields:
+            default_role, created = Role.objects.get_or_create(
+                nom_role='utilisateur',
+                defaults={'nom_role': 'utilisateur'}
+            )
+            extra_fields['role'] = default_role
+            
         user = self.model(pseudo=pseudo, mail=mail, **extra_fields)
         user.set_password(password)  # Hash du mot de passe
         user.save(using=self._db)
@@ -22,6 +31,14 @@ class UserManager(BaseUserManager):
     def create_superuser(self, pseudo, mail, password=None, **extra_fields):
         extra_fields.setdefault("is_staff", True)
         extra_fields.setdefault("is_superuser", True)
+        
+        # Créer ou récupérer un rôle admin pour le superuser
+        admin_role, created = Role.objects.get_or_create(
+            nom_role='admin',
+            defaults={'nom_role': 'admin'}
+        )
+        extra_fields['role'] = admin_role
+        
         return self.create_user(pseudo, mail, password, **extra_fields)
 
 class User(AbstractBaseUser, PermissionsMixin):
@@ -161,3 +178,55 @@ class Message(models.Model):
 
     def __str__(self):
         return f"{self.auteur} -> {self.chasse} : {self.contenu[:30]}"
+    
+class Badge(models.Model):
+    nom = models.CharField(max_length=255, null=False)
+    description = models.TextField(null=True, blank=True)
+    
+    def __str__(self):
+        return self.nom
+
+class BadgeUtilisateur(models.Model):
+    badge = models.ForeignKey(
+        Badge,
+        on_delete=models.CASCADE,
+        related_name="badges_utilisateurs"
+    )
+    utilisateur = models.ForeignKey(
+        settings.AUTH_USER_MODEL,
+        on_delete=models.CASCADE,
+        related_name="badges_utilisateur"
+    )
+    date_obtention = models.DateTimeField(auto_now_add=True)
+    
+    class Meta:
+        unique_together = ('badge', 'utilisateur')
+    
+    def __str__(self):
+        return f"{self.utilisateur.pseudo} - {self.badge.nom}"
+
+class RecompenseReclamable(models.Model):
+    TYPE_CHOICES = [
+        ('couronnes', 'Couronnes'),
+        ('objet_rare', 'Objet Rare'),
+        ('autre', 'Autre'),
+    ]
+    
+    type = models.CharField(max_length=50, choices=TYPE_CHOICES)
+    nom = models.CharField(max_length=255, null=True, blank=True)  # Pour les objets rares
+    quantite = models.IntegerField(null=True, blank=True)  # Pour les couronnes
+    raison = models.CharField(max_length=255, null=True, blank=True)
+    utilisateur = models.ForeignKey(
+        settings.AUTH_USER_MODEL,
+        on_delete=models.CASCADE,
+        related_name="recompenses_reclamables"
+    )
+    reclamable = models.BooleanField(default=True)
+    date_creation = models.DateTimeField(auto_now_add=True)
+    date_reclamation = models.DateTimeField(null=True, blank=True)
+    
+    def __str__(self):
+        if self.type == 'couronnes':
+            return f"{self.utilisateur.pseudo} - {self.quantite} Couronnes"
+        else:
+            return f"{self.utilisateur.pseudo} - {self.nom}"

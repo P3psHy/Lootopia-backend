@@ -26,6 +26,11 @@ from app.views.etape_view import ListEtapeAPIView, CreateEtapeAPIView, EtapeAPIV
 from app.views.recompense_view import ListRecompenseAPIView, RecompenseAPIView, CreateRecompenseAPIView, EditRecompenseAPIView, DeleteRecompenseAPIView
 from app.views.artefact_view import ListArtefactAPIView, CreateArtefactAPIView, ArtefactAPIView, EditArtefactAPIView, DeleteArtefactAPIView
 from app.views.message_view import ListMessageAPIView, CreateMessageAPIView, MessageAPIView, EditMessageAPIView, DeleteMessageAPIView
+from app.views.leaderboard_view import LeaderboardAPIView, LeaderboardPeriodAPIView
+from app.views.user_hunt_summary_view import UserHuntSummaryAPIView
+from app.views.user_inventory_view import UserInventoryAPIView
+from app.views.user_rewards_view import UserRewardsAPIView
+
 
 # Pour Swagger
 from drf_yasg.views import get_schema_view
@@ -61,6 +66,9 @@ urlpatterns = [
     path('api/user/<int:user_id>/', UserAPIView.as_view(), name='user-detail'),
     path('api/user/<int:user_id>/edit/', UserEditAPIView.as_view(), name='user-edit'),
     path('api/user/<int:user_id>/delete/', UserDeleteAPIView.as_view(), name='user-delete'),
+    path('api/user/<int:user_id>/inventory/', UserInventoryAPIView.as_view(), name='user-inventory'),
+    path('api/user/<int:userId>/rewards/', UserRewardsAPIView.as_view(), name='user-rewards'),
+    path('api/user/<int:userId>/hunt-summary/', UserHuntSummaryAPIView.as_view(),name='user-hunt-summary'),
 
 
     # Chasse
@@ -69,6 +77,7 @@ urlpatterns = [
     path('api/chasse/<int:chasse_id>/', ChasseAPIView.as_view(), name='chasse-detail'),
     path('api/chasse/<int:chasse_id>/edit/', EditChasseAPIView.as_view(), name='chasse-edit'),
     path('api/chasse/<int:chasse_id>/delete/', DeleteChasseAPIView.as_view(), name='chasse-delete'),
+ 
 
     # Cache
     path('api/cache/', ListCacheAPIView.as_view(), name='cache-list'),
@@ -111,6 +120,11 @@ urlpatterns = [
     path('api/message/<int:message_id>/', MessageAPIView.as_view(), name='message-detail'),
     path('api/message/<int:message_id>/edit/', EditMessageAPIView.as_view(), name='message-edit'),
     path('api/message/<int:message_id>/delete/', DeleteMessageAPIView.as_view(), name='message-delete'),
+
+    # Classements / Leaderboard
+    path('api/leaderboard/', LeaderboardAPIView.as_view(), name='leaderboard'),
+    path('api/leaderboard/<str:period>/', LeaderboardPeriodAPIView.as_view(), name='leaderboard-period'),
+
 
         # Routes Swagger
     re_path(r'^swagger/$', schema_view.with_ui('swagger', cache_timeout=0), name='schema-swagger-ui'),
