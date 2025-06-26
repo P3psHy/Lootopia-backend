@@ -19,7 +19,7 @@ class UserSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = User
-        fields = ['id', 'pseudo', 'mail', 'password', 'role_id']
+        fields = ['id', 'pseudo', 'mail', 'password', 'role_id','creerChasse', 'date_activation', 'date_desactivation', 'solde_couronne']
         extra_kwargs = {'password': {'write_only': True}}
 
     def create(self, validated_data):
@@ -52,6 +52,22 @@ class ChasseSerializer(serializers.ModelSerializer):
     class Meta:
         model = Chasse
         fields = '__all__'
+
+class ChasseGetSerializer(serializers.ModelSerializer):
+    participants = UserSerializer(many=True, read_only=True)
+    caches = serializers.PrimaryKeyRelatedField(
+        many=True,
+        queryset=Cache.objects.all()
+    )
+    createur = serializers.SlugRelatedField(
+        read_only=True,
+        slug_field='pseudo'
+    )
+
+    class Meta:
+        model = Chasse
+        fields = '__all__'
+        read_only_fields = ['participants', 'caches', 'createur']
 
 class CacheSerializer(serializers.ModelSerializer):
     class Meta:
