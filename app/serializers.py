@@ -12,6 +12,16 @@ class LoginSerializer(serializers.ModelSerializer):
         fields = ['mail', 'password']
         extra_kwargs = {'password': {'write_only': True}}
 
+class RegisterSerializer(serializers.ModelSerializer):
+    role_id = serializers.PrimaryKeyRelatedField(
+        queryset=Role.objects.all(), source='role', write_only=True
+    )
+    
+    class Meta:
+        model = User
+        fields = ['pseudo', 'mail', 'password','role_id']
+        extra_kwargs = {'password': {'write_only': True}}
+
 class UserSerializer(serializers.ModelSerializer):
     role_id = serializers.PrimaryKeyRelatedField(
         queryset=Role.objects.all(), source='role', write_only=True

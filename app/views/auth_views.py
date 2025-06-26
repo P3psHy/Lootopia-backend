@@ -4,7 +4,7 @@ from rest_framework.response import Response
 from rest_framework import status
 from ..models import User, Role
 from ..serializers import UserSerializer
-from ..serializers import LoginSerializer
+from ..serializers import LoginSerializer, RegisterSerializer
 from rest_framework_simplejwt.tokens import RefreshToken
 from rest_framework_simplejwt.authentication import JWTAuthentication
 from rest_framework.permissions import IsAuthenticated
@@ -12,7 +12,7 @@ from drf_yasg.utils import swagger_auto_schema
 
 
 class RegisterAPIView(APIView):
-    @swagger_auto_schema(request_body=UserSerializer)
+    @swagger_auto_schema(request_body=RegisterSerializer)
     def post(self, request):
         pseudo = request.data.get("pseudo")
         mail = request.data.get("mail")
