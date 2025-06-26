@@ -20,11 +20,7 @@ class Migration(migrations.Migration):
                 ('description', models.TextField(blank=True, null=True)),
             ],
         ),
-        migrations.RenameField(
-            model_name='user',
-            old_name='solde_coronne',
-            new_name='solde_couronne',
-        ),
+        # Opération de renommage supprimée car le champ existe déjà avec le bon nom
         migrations.CreateModel(
             name='RecompenseReclamable',
             fields=[
