@@ -19,7 +19,7 @@ from django.urls import path, re_path
 from app.views.auth_views import RegisterAPIView, LoginView, VerifyTokenAPIView
 from app.views.user_view import ListUserAPIView, UserCreateAPIView, UserAPIView, UserEditAPIView, UserDeleteAPIView, UserChasseAPIView
 from app.views.landing_view import home_view
-from app.views.chasse_view import ListChasseAPIView, CreateChasseApiView, ChasseAPIView, EditChasseAPIView, DeleteChasseAPIView
+from app.views.chasse_view import ListChasseAPIView, CreateChasseApiView, ChasseAPIView, EditChasseAPIView, DeleteChasseAPIView, ChasseRejoindreAPIView
 from app.views.theme_view import ListThemeAPIView, CreateThemeAPIView, ThemeAPIView, EditThemeAPIView, DeleteThemeAPIView
 from app.views.cache_view import ListCacheAPIView, CreateCacheApiView, CacheAPIView, EditCacheAPIView, DeleteCacheAPIView
 from app.views.etape_view import ListEtapeAPIView, CreateEtapeAPIView, EtapeAPIView, EditEtapeAPIView, DeleteEtapeAPIView
@@ -69,6 +69,7 @@ urlpatterns = [
     path('api/chasse/<int:chasse_id>/', ChasseAPIView.as_view(), name='chasse-detail'),
     path('api/chasse/<int:chasse_id>/edit/', EditChasseAPIView.as_view(), name='chasse-edit'),
     path('api/chasse/<int:chasse_id>/delete/', DeleteChasseAPIView.as_view(), name='chasse-delete'),
+    path('api/chasse/<int:chasse_id>/rejoindre/', ChasseRejoindreAPIView.as_view(), name='chasse-rejoindre'),
 
     # Cache
     path('api/cache/', ListCacheAPIView.as_view(), name='cache-list'),
