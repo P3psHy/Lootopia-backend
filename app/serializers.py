@@ -30,6 +30,8 @@ class UserSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
         fields = ['id', 'pseudo', 'mail', 'password', 'role_id','creerChasse', 'date_activation', 'date_desactivation', 'solde_couronne']
+        read_only_fields = ['id', 'role', 'creerChasse', 'date_activation', 'date_desactivation', 'solde_couronne', 'participants']
+
         extra_kwargs = {'password': {'write_only': True}}
 
     def create(self, validated_data):
@@ -40,6 +42,29 @@ class UserSerializer(serializers.ModelSerializer):
         user.save()
         return user
 
+class ChasseMiniSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Chasse
+        fields = '__all__'
+
+class UserChassesSerializer(serializers.ModelSerializer):
+    chasses_participees = ChasseMiniSerializer(
+        source='chasses_participants',  # related_name du ManyToManyField dans Chasse
+        many=True,
+        read_only=True
+    )
+    chasses_crees = ChasseMiniSerializer(
+        source='chasse_createur',  # related_name du ForeignKey dans Chasse
+        many=True,
+        read_only=True
+    )
+
+    class Meta:
+        model = User
+        fields = [
+            'id', 'pseudo', 'mail', 'chasses_participees', 'chasses_crees',
+            'creerChasse', 'date_activation', 'date_desactivation', 'solde_couronne'
+        ]
 
 # class UserSerializer(serializers.ModelSerializer):
 #     role = RoleSerializer(read_only=True)  # Inclut les détails du rôle

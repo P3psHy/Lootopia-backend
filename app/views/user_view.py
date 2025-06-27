@@ -2,10 +2,16 @@ from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status
 from app.models import User
-from app.serializers import UserSerializer
+from app.serializers import UserSerializer, UserChassesSerializer
 
 from drf_yasg.utils import swagger_auto_schema
 from django.shortcuts import get_object_or_404
+
+class UserChasseAPIView(APIView):
+    def get(self, request, user_id):
+        user = get_object_or_404(User, id=user_id)
+        serializer = UserChassesSerializer(user)
+        return Response(serializer.data, status=status.HTTP_200_OK)
 
 class ListUserAPIView(APIView):
     def get(self, request):
