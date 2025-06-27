@@ -2,7 +2,7 @@ from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status
 from app.models import Chasse
-from app.serializers import ChasseSerializer, ChasseGetSerializer
+from app.serializers import ChasseSerializer, ChasseGetSerializer, ChasseRejoindreSerializer
 from rest_framework.pagination import PageNumberPagination
 from rest_framework.generics import ListAPIView
 from rest_framework.permissions import IsAuthenticated
@@ -12,6 +12,26 @@ from drf_yasg.utils import swagger_auto_schema
 from django.shortcuts import get_object_or_404
 from app.models import Chasse, User
 
+class ChasseRejoindreAPIView(APIView):
+    @swagger_auto_schema(request_body=ChasseRejoindreSerializer)
+    def post(self, request, chasse_id):
+        chasse = get_object_or_404(Chasse, id=chasse_id)
+        user_id = request.data.get("user_id")
+        
+        if not user_id:
+            return Response({"detail": "user_id requis."}, status=status.HTTP_400_BAD_REQUEST)
+        user = get_object_or_404(User, id=user_id)
+
+        if user in chasse.participants.all():
+            return Response({"detail": "Vous participez déjà à cette chasse."}, status=status.HTTP_400_BAD_REQUEST)
+        
+        if chasse.participants.count() >= chasse.nombre_participant:
+            return Response({"detail": "Le nombre maximum de participants a été atteint."}, status=status.HTTP_400_BAD_REQUEST)
+        
+        chasse.participants.add(user)
+        chasse.save()
+        
+        return Response({"detail": "Vous avez rejoint la chasse avec succès."}, status=status.HTTP_200_OK)
 
 class ListChasseAPIView(APIView):
     def get(self, request):

@@ -104,6 +104,10 @@ class ChasseGetSerializer(serializers.ModelSerializer):
         fields = '__all__'
         read_only_fields = ['participants', 'caches', 'createur']
 
+class ChasseRejoindreSerializer(serializers.Serializer):
+    user_id = serializers.IntegerField(help_text="ID de l'utilisateur qui rejoint la chasse")
+        
+
 class CacheSerializer(serializers.ModelSerializer):
     class Meta:
         model = Cache
