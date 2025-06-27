@@ -30,6 +30,7 @@ from app.views.leaderboard_view import LeaderboardAPIView, LeaderboardPeriodAPIV
 from app.views.user_hunt_summary_view import UserHuntSummaryAPIView
 from app.views.user_inventory_view import UserInventoryAPIView
 from app.views.user_rewards_view import UserRewardsAPIView
+from app.views.store_view import StoreAPIView
 
 
 # Pour Swagger
@@ -126,8 +127,10 @@ urlpatterns = [
     path('api/leaderboard/', LeaderboardAPIView.as_view(), name='leaderboard'),
     path('api/leaderboard/<str:period>/', LeaderboardPeriodAPIView.as_view(), name='leaderboard-period'),
 
+    # Boutique
+    path('api/store/', StoreAPIView.as_view(), name='store'),
 
-        # Routes Swagger
+    # Routes Swagger
     re_path(r'^swagger/$', schema_view.with_ui('swagger', cache_timeout=0), name='schema-swagger-ui'),
     re_path(r'^redoc/$', schema_view.with_ui('redoc', cache_timeout=0), name='schema-redoc'),
 ]
