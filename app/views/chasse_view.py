@@ -2,7 +2,7 @@ from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status
 from app.models import Chasse
-from app.serializers import ChasseSerializer, ChasseGetSerializer, ChasseRejoindreSerializer
+from app.serializers import ChasseSerializer, ChasseGetSerializer, ChasseRejoindreSerializer, ChasseQuitterSerializer
 from rest_framework.pagination import PageNumberPagination
 from rest_framework.generics import ListAPIView
 from rest_framework.permissions import IsAuthenticated
@@ -34,6 +34,7 @@ class ChasseRejoindreAPIView(APIView):
         return Response({"detail": "Vous avez rejoint la chasse avec succès."}, status=status.HTTP_200_OK)
 
 class ChasseQuitterAPIView(APIView):
+    @swagger_auto_schema(request_body=ChasseQuitterSerializer)
     def post(self, request, chasse_id):
         chasse = get_object_or_404(Chasse, id=chasse_id)
         user_id = request.data.get("user_id")

@@ -106,7 +106,9 @@ class ChasseGetSerializer(serializers.ModelSerializer):
 
 class ChasseRejoindreSerializer(serializers.Serializer):
     user_id = serializers.IntegerField(help_text="ID de l'utilisateur qui rejoint la chasse")
-        
+
+class ChasseQuitterSerializer(serializers.Serializer):
+    user_id = serializers.IntegerField(help_text="ID de l'utilisateur qui quitte la chasse")   
 
 class CacheSerializer(serializers.ModelSerializer):
     class Meta:
