@@ -33,6 +33,23 @@ class ChasseRejoindreAPIView(APIView):
         
         return Response({"detail": "Vous avez rejoint la chasse avec succès."}, status=status.HTTP_200_OK)
 
+class ChasseQuitterAPIView(APIView):
+    def post(self, request, chasse_id):
+        chasse = get_object_or_404(Chasse, id=chasse_id)
+        user_id = request.data.get("user_id")
+        
+        if not user_id:
+            return Response({"detail": "user_id requis."}, status=status.HTTP_400_BAD_REQUEST)
+        user = get_object_or_404(User, id=user_id)
+
+        if user not in chasse.participants.all():
+            return Response({"detail": "Vous ne participez pas à cette chasse."}, status=status.HTTP_400_BAD_REQUEST)
+        
+        chasse.participants.remove(user)
+        chasse.save()
+        
+        return Response({"detail": "Vous avez quitté la chasse avec succès."}, status=status.HTTP_200_OK)
+
 class ListChasseAPIView(APIView):
     def get(self, request):
         chasses = Chasse.objects.all()
